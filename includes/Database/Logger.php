@@ -16,7 +16,7 @@ class Logger extends AbstractLogger {
     /**
      * Log messages.
      *
-     * @var array
+     * @var string[]
      */
     protected $messages = [];
 
@@ -83,7 +83,7 @@ class Logger extends AbstractLogger {
      * @param  array  $values     Optional array of values corresponding to placeholders
      * @return string             Readable SQL query with placeholders replaced
      */
-    public function pretty_format($statement, array $values = array() ) {
+    public function pretty_format(string $statement, array $values = array() ):string {
         if (!$values) {
             return $statement;
         }

@@ -25,9 +25,8 @@ class Options {
     /**
      * Hold a copy of the all mighty $ydb global
      *
-     * @var \YOURLS\Database\YDB
      */
-    protected $ydb;
+    protected YDB $ydb;
 
     public function __construct(YDB $ydb) {
         $this->ydb = $ydb;
@@ -40,7 +39,7 @@ class Options {
      * @see yourls_get_all_options()
      * @return bool    True on success, false on failure (eg table missing or empty)
      */
-    public function get_all_options() {
+    public function get_all_options():bool {
         // Get option values from DB
         $table = YOURLS_DB_TABLE_OPTIONS;
         $sql = "SELECT option_name, option_value FROM $table WHERE 1=1";
@@ -89,7 +88,7 @@ class Options {
      * @param  string $default  Value to return if option doesn't exist
      * @return mixed            Value set for the option
      */
-    public function get($name, $default) {
+    public function get(string $name, string $default):mixed {
         $name = trim((string)$name);
         if (empty($name)) {
             return $default;
@@ -136,7 +135,7 @@ class Options {
      * @param  mixed  $newvalue  Option value.
      * @return bool              False if value was not updated, true otherwise.
      */
-    public function update($name, $newvalue) {
+    public function update(string $name, mixed $newvalue):bool {
         $name = trim((string)$name);
         if (empty($name)) {
             return false;
@@ -185,7 +184,7 @@ class Options {
      * @param  mixed  $value  Option value. Must be serializable if non-scalar. Expected to not be SQL-escaped.
      * @return bool           False if option was not added (eg already exists), true otherwise.
      */
-    public function add($name, $value) {
+    public function add(string $name, mixed $value):bool {
         $name = trim((string)$name);
         if (empty($name)) {
             return false;
@@ -230,7 +229,7 @@ class Options {
      * @param  string $name  Option name to delete. Expected to not be SQL-escaped.
      * @return bool          False if option was not deleted (eg not found), true otherwise.
      */
-    public function delete($name) {
+    public function delete(string $name):bool {
         $name = trim((string)$name);
         if (empty($name)) {
             return false;

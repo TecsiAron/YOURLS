@@ -22,35 +22,31 @@ class YDB extends ExtendedPdo {
 
     /**
      * Debug mode, default false
-     * @var bool
      */
-    protected $debug = false;
+    protected bool $debug = false;
 
     /**
      * Page context (ie "infos", "bookmark", "plugins"...)
-     * @var string
      */
-    protected $context = '';
+    protected string $context = '';
 
     /**
      * Information related to a short URL keyword (eg timestamp, long URL, ...)
      *
-     * @var array
      *
      */
-    protected $infos = [];
+    protected array $infos = [];
 
     /**
      * Is YOURLS installed and ready to run?
-     * @var bool
      */
-    protected $installed = false;
+    protected bool $installed = false;
 
     /**
      * Options
-     * @var array
+     * @var string[]
      */
-    protected $option = [];
+    protected array $option = [];
 
     /**
      * Plugin admin pages informations
@@ -60,15 +56,14 @@ class YDB extends ExtendedPdo {
 
     /**
      * Plugin informations
-     * @var array
+     * @var string[]
      */
     protected $plugins = [];
 
     /**
      * Are we emulating prepare statements ?
-     * @var bool
      */
-    protected $is_emulate_prepare;
+    protected bool $is_emulate_prepare;
 
     /**
      * @since 1.7.3
@@ -78,7 +73,7 @@ class YDB extends ExtendedPdo {
      * @param array  $options     Driver-specific options
      * @param array  $attributes  Attributes to set after a connection
      */
-    public function __construct($dsn, $user, $pass, $options, $attributes) {
+    public function __construct(string $dsn, string $user, string $pass, array $options, array $attributes) {
         parent::__construct($dsn, $user, $pass, $options, $attributes);
     }
 
@@ -93,7 +88,7 @@ class YDB extends ExtendedPdo {
      * @since  1.7.3
      * @return void
      */
-    public function init() {
+    public function init():void {
         $this->connect_to_DB();
 
         $this->set_emulate_state();
@@ -111,7 +106,7 @@ class YDB extends ExtendedPdo {
      * @since  1.7.3
      * @return void
      */
-    public function set_emulate_state() {
+    public function set_emulate_state():void {
         try {
             $this->is_emulate_prepare = $this->getAttribute(PDO::ATTR_EMULATE_PREPARES);
         } catch (\PDOException $e) {
@@ -125,7 +120,7 @@ class YDB extends ExtendedPdo {
      * @since  1.7.3
      * @return bool
      */
-    public function get_emulate_state() {
+    public function get_emulate_state():bool {
         return $this->is_emulate_prepare;
     }
 
@@ -138,7 +133,7 @@ class YDB extends ExtendedPdo {
      * @return void
      * @throws \PDOException
      */
-    public function connect_to_DB() {
+    public function connect_to_DB():void {
         try {
             $this->connect();
         } catch ( \Exception $e ) {
@@ -155,7 +150,7 @@ class YDB extends ExtendedPdo {
      *
      * @return void
      */
-    public function dead_or_error(\Exception $exception) {
+    public function dead_or_error(\Exception $exception):void {
         // Use any /user/db_error.php file
         $file = YOURLS_USERDIR . '/db_error.php';
         if(file_exists($file)) {
@@ -179,7 +174,7 @@ class YDB extends ExtendedPdo {
      * @see    \Aura\Sql\Profiler\MemoryLogger
      * @return void
      */
-    public function start_profiler() {
+    public function start_profiler():void {
         // Instantiate a custom logger and make it the profiler
         $yourls_logger = new Logger();
         $profiler = new Profiler($yourls_logger);
@@ -196,14 +191,14 @@ class YDB extends ExtendedPdo {
      * @param string $context
      * @return void
      */
-    public function set_html_context($context) {
+    public function set_html_context(string $context):void {
         $this->context = $context;
     }
 
     /**
      * @return string
      */
-    public function get_html_context() {
+    public function get_html_context():string {
         return $this->context;
     }
 
@@ -214,7 +209,7 @@ class YDB extends ExtendedPdo {
      * @param mixed  $value
      * @return void
      */
-    public function set_option($name, $value) {
+    public function set_option(string $name, mixed $value) {
         $this->option[$name] = $value;
     }
 
@@ -222,15 +217,15 @@ class YDB extends ExtendedPdo {
      * @param  string $name
      * @return bool
      */
-    public function has_option($name) {
+    public function has_option(string $name):bool {
         return array_key_exists($name, $this->option);
     }
 
     /**
      * @param  string $name
-     * @return string
+     * @return mixed
      */
-    public function get_option($name) {
+    public function get_option(string $name):mixed {
         return $this->option[$name];
     }
 
@@ -238,7 +233,7 @@ class YDB extends ExtendedPdo {
      * @param string $name
      * @return void
      */
-    public function delete_option($name) {
+    public function delete_option($name):void {
         unset($this->option[$name]);
     }
 
@@ -250,7 +245,7 @@ class YDB extends ExtendedPdo {
      * @param mixed  $infos
      * @return void
      */
-    public function set_infos($keyword, $infos) {
+    public function set_infos(string $keyword, mixed $infos):void {
         $this->infos[$keyword] = $infos;
     }
 
@@ -258,7 +253,7 @@ class YDB extends ExtendedPdo {
      * @param  string $keyword
      * @return bool
      */
-    public function has_infos($keyword) {
+    public function has_infos(string $keyword):bool {
         return array_key_exists($keyword, $this->infos);
     }
 
@@ -266,7 +261,7 @@ class YDB extends ExtendedPdo {
      * @param  string $keyword
      * @return array
      */
-    public function get_infos($keyword) {
+    public function get_infos(string $keyword):array {
         return $this->infos[$keyword];
     }
 
@@ -274,7 +269,7 @@ class YDB extends ExtendedPdo {
      * @param string $keyword
      * @return void
      */
-    public function delete_infos($keyword) {
+    public function delete_infos(string $keyword):void {
         unset($this->infos[$keyword]);
     }
 
@@ -288,7 +283,7 @@ class YDB extends ExtendedPdo {
     /**
      * @return array
      */
-    public function get_plugins() {
+    public function get_plugins():array {
         return $this->plugins;
     }
 
@@ -296,7 +291,7 @@ class YDB extends ExtendedPdo {
      * @param array $plugins
      * @return void
      */
-    public function set_plugins(array $plugins) {
+    public function set_plugins(array $plugins):void {
         $this->plugins = $plugins;
     }
 
@@ -304,7 +299,7 @@ class YDB extends ExtendedPdo {
      * @param string $plugin  plugin filename
      * @return void
      */
-    public function add_plugin($plugin) {
+    public function add_plugin(string $plugin):void {
         $this->plugins[] = $plugin;
     }
 
@@ -312,7 +307,7 @@ class YDB extends ExtendedPdo {
      * @param string $plugin  plugin filename
      * @return void
      */
-    public function remove_plugin($plugin) {
+    public function remove_plugin(string $plugin):void {
         unset($this->plugins[$plugin]);
     }
 
@@ -322,7 +317,7 @@ class YDB extends ExtendedPdo {
     /**
      * @return array
      */
-    public function get_plugin_pages() {
+    public function get_plugin_pages():array {
         return is_array( $this->plugin_pages ) ? $this->plugin_pages : [];
     }
 
@@ -330,7 +325,7 @@ class YDB extends ExtendedPdo {
      * @param array $pages
      * @return void
      */
-    public function set_plugin_pages(array $pages) {
+    public function set_plugin_pages(array $pages):void {
         $this->plugin_pages = $pages;
     }
 
@@ -340,7 +335,7 @@ class YDB extends ExtendedPdo {
      * @param callable $function
      * @return void
      */
-    public function add_plugin_page( $slug, $title, $function ) {
+    public function add_plugin_page(string $slug, string $title, callable $function ):void {
         $this->plugin_pages[ $slug ] = [
             'slug'     => $slug,
             'title'    => $title,
@@ -352,7 +347,7 @@ class YDB extends ExtendedPdo {
      * @param string $slug
      * @return void
      */
-    public function remove_plugin_page( $slug ) {
+    public function remove_plugin_page(string $slug ):void {
         unset( $this->plugin_pages[ $slug ] );
     }
 
@@ -363,7 +358,7 @@ class YDB extends ExtendedPdo {
      * @since  1.7.3
      * @return int
      */
-    public function get_num_queries() {
+    public function get_num_queries():int {
         return count( (array) $this->get_queries() );
     }
 
@@ -373,7 +368,7 @@ class YDB extends ExtendedPdo {
      * @since  1.7.3
      * @return array
      */
-    public function get_queries() {
+    public function get_queries():array {
         $queries = $this->getProfiler()->getLogger()->getMessages();
 
         // Only keep messages that start with "SQL "
@@ -389,7 +384,7 @@ class YDB extends ExtendedPdo {
      * @param  bool $bool
      * @return void
      */
-    public function set_installed($bool) {
+    public function set_installed(bool $bool):void {
         $this->installed = $bool;
     }
 
@@ -399,7 +394,7 @@ class YDB extends ExtendedPdo {
      * @since  1.7.3
      * @return bool
      */
-    public function is_installed() {
+    public function is_installed():bool {
         return $this->installed;
     }
 
@@ -417,7 +412,7 @@ class YDB extends ExtendedPdo {
      * @since  1.7.3
      * @return string
      */
-    public function mysql_version() {
+    public function mysql_version():string {
         $version = $this->pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
         return $version;
     }
