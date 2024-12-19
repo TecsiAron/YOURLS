@@ -11,7 +11,7 @@ class Init {
     /**
      * @var InitDefaults
      */
-    protected $actions;
+    protected InitDefaults $actions;
 
     /**
      * @since  1.7.3
@@ -129,7 +129,7 @@ class Init {
      * @since  1.7.3
      * @return void
      */
-    public function redirect_ssl_if_needed() {
+    public function redirect_ssl_if_needed():void {
         if (yourls_is_admin() && yourls_needs_ssl() && !yourls_is_ssl()) {
             if ( 0 === strpos( $_SERVER['REQUEST_URI'], 'http' ) ) {
                 yourls_redirect( preg_replace( '|^http://|', 'https://', $_SERVER['REQUEST_URI'] ) );
@@ -144,7 +144,7 @@ class Init {
      * @since  1.7.3
      * @return void
      */
-    public function include_db_files() {
+    public function include_db_files():void {
         // Attempt to open drop-in replacement for the DB engine else default to core engine
         $file = YOURLS_USERDIR . '/db.php';
         $attempt = false;
@@ -171,7 +171,7 @@ class Init {
      * @since  1.7.3
      * @return void
      */
-    public function include_cache_files() {
+    public function include_cache_files():void {
         $file = YOURLS_USERDIR . '/cache.php';
         $attempt = false;
         if(file_exists($file)) {
@@ -187,7 +187,7 @@ class Init {
      * @since  1.7.3
      * @return void
      */
-    public function include_core_functions() {
+    public function include_core_functions():void {
         require_once YOURLS_INC.'/version.php';
         require_once YOURLS_INC.'/functions.php';
         require_once YOURLS_INC.'/functions-geo.php';

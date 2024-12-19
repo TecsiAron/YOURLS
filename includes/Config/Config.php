@@ -10,15 +10,9 @@ use YOURLS\Exceptions\ConfigException;
 
 class Config {
 
-    /**
-     * @var string
-     */
-    protected $root;
+    protected string $root;
 
-    /**
-     * @var string
-     */
-    protected $config;
+    protected string $config;
 
     /**
      * @since  1.7.3
@@ -36,7 +30,7 @@ class Config {
      * @param  string  $path
      * @return string  path with \ converted to /
      */
-    public function fix_win32_path($path) {
+    public function fix_win32_path(string $path):string {
         return str_replace('\\', '/', $path);
     }
 
@@ -45,7 +39,7 @@ class Config {
      * @param  string $config   path to config file
      * @return void
      */
-    public function set_config($config) {
+    public function set_config(string $config):void {
         $this->config = $config;
     }
 
@@ -54,7 +48,7 @@ class Config {
      * @param  string $root   path to YOURLS root directory
      * @return void
      */
-    public function set_root($root) {
+    public function set_root(string $root):void {
         $this->root = $root;
     }
 
@@ -65,7 +59,7 @@ class Config {
      * @return string         path to found config file
      * @throws ConfigException
      */
-    public function find_config() {
+    public function find_config():string {
 
         $config = $this->fix_win32_path($this->config);
 
@@ -99,7 +93,7 @@ class Config {
      * @return void
      * @throws ConfigException
      */
-    public function define_core_constants() {
+    public function define_core_constants():void {
         // Check minimal config job has been properly done
         $must_haves = array('YOURLS_DB_USER', 'YOURLS_DB_PASS', 'YOURLS_DB_NAME', 'YOURLS_DB_HOST', 'YOURLS_DB_PREFIX', 'YOURLS_SITE');
         foreach($must_haves as $must_have) {
